@@ -5,7 +5,7 @@ from app.settings.base import BaseConfig
 
 class RedisSettings(BaseConfig):
     REDIS_PASSWORD: SecretStr = SecretStr('default_pwd')
-    REDIS_PORT: str = 6379
+    REDIS_PORT: str = "6379"
     REDIS_HOST: str = "db_redis"
 
     @property
@@ -15,3 +15,4 @@ class RedisSettings(BaseConfig):
 
 
 redis_settings = RedisSettings()
+print(redis_settings.redis_dsn)
