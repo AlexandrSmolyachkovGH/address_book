@@ -41,8 +41,8 @@ Address Book Service — это FastAPI-приложение для хранен
 ### 1. Клонирование проекта
 
 ```bash
-git@github.com:AlexandrSmolyachkovGH/address_book.git
-cd address-book
+git clone git@github.com:AlexandrSmolyachkovGH/address_book.git
+cd address_book
 ```
 
 ### 2. Настройка окружения
