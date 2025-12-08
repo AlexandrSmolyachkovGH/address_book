@@ -1,0 +1,40 @@
+name: GitHub actions for the AddressBook service
+run-name: pr-address-book-tests
+on: [ pull_request ]
+jobs:
+  run_tests:
+    runs-on: ubuntu-latest
+    env:
+      REDIS_HOST: 'db_redis'
+      REDIS_PORT: '6379'
+      REDIS_PASSWORD: 'address_book_RedisPwd123'
+
+    steps:
+      - name: Checkout repository code
+        uses: actions/checkout@v4
+
+      - name: Create Docker network
+        run: docker network create app_network || true
+
+      - name: Build and run Docker Compose
+        run: docker compose -f docker-compose.yaml up -d --build
+
+      - name: Wait for Redis to be ready
+        run: |
+            echo "Waiting for Redis..."
+            for i in {1..10}; do
+              if docker exec address_book_redis redis-cli -a $REDIS_PASSWORD PING | grep -q PONG; then
+                echo "Redis is ready!"
+                exit 0
+              fi
+              echo "Retry $i..."
+              sleep 2
+            done
+            echo "Redis did not start in time"
+            exit 1
+
+      - name: Run tests inside API container
+        run: docker exec address_book_api poetry run coverage run -m pytest
+
+      - name: Report Coverage
+        run: docker exec address_book_api poetry run coverage report --fail-under=80
