@@ -48,3 +48,11 @@ class DeleteBookData(PhoneData):
 
 class UpdateBookData(AddressData, PhoneData):
     pass
+
+
+class ContactData(BaseModel):
+    phone: str
+    phone_normalized: str
+    wrong_phone: str
+    address: str
+    extra_address: str

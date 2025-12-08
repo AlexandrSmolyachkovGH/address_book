@@ -52,7 +52,7 @@ class BookRepository:
         self,
         phone: str,
         redis_db: Redis,
-    ) -> dict:
+    ) -> int:
         try:
             delete_res = await redis_db.delete(phone)
         except RedisError as e:
